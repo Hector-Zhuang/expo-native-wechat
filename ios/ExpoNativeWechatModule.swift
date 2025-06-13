@@ -168,10 +168,13 @@ public class ExpoNativeWechatModule: Module {
             }
             
             if params.coverUrl != nil {
-                let url = URL(string: params.coverUrl!)
+                guard let url = URL(string: params.coverUrl!) else {
+                    self.sendEvent("ResponseData", ["id": params.id, "success": false, "message": "Invalid cover URL"])
+                    return
+                }
                 
-                ExpoWechatUtils.downloadFile(url: url!) { data in
-                    if data == nil {
+                ExpoWechatUtils.downloadFile(url: url) { data in
+                    if data != nil {
                         let compressed = ExpoWechatUtils.compressImage(data: data!, limit: 32000)
                         
                         onCoverDownloaded(compressed)
@@ -214,10 +217,13 @@ public class ExpoNativeWechatModule: Module {
             }
             
             if params.coverUrl != nil {
-                let url = URL(string: params.coverUrl!)
+                guard let url = URL(string: params.coverUrl!) else {
+                    self.sendEvent("ResponseData", ["id": params.id, "success": false, "message": "Invalid cover URL"])
+                    return
+                }
                 
-                ExpoWechatUtils.downloadFile(url: url!) { data in
-                    if data == nil {
+                ExpoWechatUtils.downloadFile(url: url) { data in
+                    if data != nil {
                         let compressed = ExpoWechatUtils.compressImage(data: data!, limit: 32000)
                         
                         onCoverDownloaded(compressed)
@@ -264,10 +270,13 @@ public class ExpoNativeWechatModule: Module {
             }
             
             if params.coverUrl != nil {
-                let url = URL(string: params.coverUrl!)
+                guard let url = URL(string: params.coverUrl!) else {
+                    self.sendEvent("ResponseData", ["id": params.id, "success": false, "message": "Invalid cover URL"])
+                    return
+                }
                 
-                ExpoWechatUtils.downloadFile(url: url!) { data in
-                    if data == nil {
+                ExpoWechatUtils.downloadFile(url: url) { data in
+                    if data != nil {
                         let compressed = ExpoWechatUtils.compressImage(data: data!, limit: 32000)
                         
                         onCoverDownloaded(compressed)
