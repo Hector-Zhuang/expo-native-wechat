@@ -126,6 +126,25 @@ export type NativeWechatResponse<T = Record<string, unknown>> = {
 };
 ```
 
+## WeChat App Pure Contract Signing
+
+### appPureSignContract
+
+```typescript
+import { appPureSignContract } from 'expo-native-wechat';
+
+const signContract = async () => {
+  try {
+    const result = await appPureSignContract({
+      preEntrustwebId: '5778aadY9nltAsZzXixCkFIGYnV2V'
+    });
+    console.log('Contract signing result:', result);
+  } catch (error) {
+    console.error('Contract signing failed:', error);
+  }
+};
+```
+
 # Support
 
 If you have trouble using this library, do not hesitate to open an issue. I am always here to help.

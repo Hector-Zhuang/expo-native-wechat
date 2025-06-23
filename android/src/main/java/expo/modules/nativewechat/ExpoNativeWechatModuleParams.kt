@@ -196,3 +196,11 @@ class OpenCustomerServiceParams : Record {
   @Field
   val url: String = ""
 }
+
+class AppPureSignContractParams : Record {
+  @Field
+  val id: String = ""
+
+  @Field
+  val preEntrustwebId: String = ""
+}

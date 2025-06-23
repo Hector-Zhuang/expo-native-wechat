@@ -194,3 +194,11 @@ struct OpenCustomerServiceParams: Record {
     @Field
     var url: String
 }
+
+struct AppPureSignContractParams: Record {
+    @Field
+    var id: String
+    
+    @Field
+    var preEntrustwebId: String
+}

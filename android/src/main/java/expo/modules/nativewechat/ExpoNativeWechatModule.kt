@@ -12,6 +12,7 @@ import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelbiz.SubscribeMessage
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
+import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessWebview
 import com.tencent.mm.opensdk.modelbiz.WXOpenCustomerServiceChat
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
@@ -403,6 +404,22 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
             req.corpId = corpId
             req.url = url
 
+            sendEvent(
+                "ResponseData", bundleOf(
+                    "id" to params.id,
+                    "success" to wxApi?.sendReq(req)
+                )
+            )
+        }
+
+        Function("appPureSignContract") { params: AppPureSignContractParams ->
+            val req = WXOpenBusinessWebview.Req()
+            req.businessType = 12 // 固定值
+            
+            val queryInfo = HashMap<String, String>()
+            queryInfo["pre_entrustweb_id"] = params.preEntrustwebId
+            req.queryInfo = queryInfo
+            
             sendEvent(
                 "ResponseData", bundleOf(
                     "id" to params.id,
