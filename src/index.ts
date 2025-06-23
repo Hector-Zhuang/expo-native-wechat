@@ -292,6 +292,22 @@ export const launchMiniProgram = (request: {
   });
 };
 
+export const appPureSignContract = (request: {
+  preEntrustwebId: string;
+}) => {
+  assertRegisteration("appPureSignContract");
+
+  return new Promise<boolean>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.appPureSignContract)(request);
+
+    notification.once(id, (error, data) => {
+      if (error) reject(error);
+
+      resolve(data);
+    });
+  });
+};
+
 export const NativeWechatConstants =
   NativeModule.getConstants() as NativeWechatModuleConstants;
 

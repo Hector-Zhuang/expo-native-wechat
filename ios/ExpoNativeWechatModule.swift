@@ -333,5 +333,19 @@ public class ExpoNativeWechatModule: Module {
                 self.sendEvent("ResponseData", ["id": params.id, "success": success])
             }
         }
+        
+        Function("appPureSignContract") { (params: AppPureSignContractParams) -> Void in
+            let req = WXOpenBusinessWebViewReq()
+            
+            req.businessType = 12 // 固定值
+            
+            var queryInfoDic = [String: String]()
+            queryInfoDic["pre_entrustweb_id"] = params.preEntrustwebId
+            req.queryInfoDic = queryInfoDic
+            
+            WXApi.send(req) { success in
+                self.sendEvent("ResponseData", ["id": params.id, "success": success])
+            }
+        }
     }
 }
