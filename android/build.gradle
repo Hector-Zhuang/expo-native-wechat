@@ -38,17 +38,31 @@ buildscript {
 }
 
 android {
-  compileSdkVersion safeExtGet("compileSdkVersion", 33)
+  compileSdkVersion safeExtGet("compileSdkVersion", 34)
 
+  // 根据 AGP 版本设置合适的 JVM 版本，确保兼容性
   def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
-  if (agpVersion.tokenize('.')[0].toInteger() < 8) {
-    compileOptions {
+  def agpMajorVersion = agpVersion.tokenize('.')[0].toInteger()
+  
+  compileOptions {
+    if (agpMajorVersion >= 8) {
+      // AGP 8.0+ 使用 Java 17
+      sourceCompatibility JavaVersion.VERSION_17
+      targetCompatibility JavaVersion.VERSION_17
+    } else {
+      // AGP 7.x 及以下使用 Java 11
       sourceCompatibility JavaVersion.VERSION_11
       targetCompatibility JavaVersion.VERSION_11
     }
+  }
 
-    kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_11.majorVersion
+  kotlinOptions {
+    if (agpMajorVersion >= 8) {
+      // AGP 8.0+ 使用 Java 17
+      jvmTarget = JavaVersion.VERSION_17.toString()
+    } else {
+      // AGP 7.x 及以下使用 Java 11
+      jvmTarget = JavaVersion.VERSION_11.toString()
     }
   }
 
