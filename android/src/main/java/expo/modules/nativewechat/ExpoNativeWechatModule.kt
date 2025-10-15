@@ -14,6 +14,7 @@ import com.tencent.mm.opensdk.modelbiz.SubscribeMessage
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessWebview
 import com.tencent.mm.opensdk.modelbiz.WXOpenCustomerServiceChat
+import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessView
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXImageObject
@@ -426,6 +427,38 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
                     "success" to wxApi?.sendReq(req)
                 )
             )
+        }
+
+        Function("requestMerchantTransfer") { params: RequestMerchantTransferParams ->
+
+            val wxSdkVersion = wxApi?.wxAppSupportAPI ?: 0
+            if (wxSdkVersion < com.tencent.mm.opensdk.constants.Build.OPEN_BUSINESS_VIEW_SDK_INT) {
+
+                sendEvent(
+                        "ResponseData",
+                        bundleOf(
+                                "id" to params.id,
+                                "success" to false,
+                                "errorCode" to -1,
+                                "errorStr" to "微信版本过低，请升级到8.0.45及以上版本"
+                        )
+                )
+                return@Function
+            }
+
+            val req = WXOpenBusinessView.Req()
+            req.businessType = "requestMerchantTransfer"
+
+            val encodedMchId = java.net.URLEncoder.encode(params.mchId, "UTF-8")
+
+            val encodedAppId = java.net.URLEncoder.encode(appid ?: "", "UTF-8")
+
+            val encodedPackage = java.net.URLEncoder.encode(params.packageStr, "UTF-8")
+
+            val query = "mchId=${encodedMchId}&appId=${encodedAppId}&package=${encodedPackage}"
+            req.query = query
+
+            sendEvent("ResponseData", bundleOf("id" to params.id, "success" to wxApi?.sendReq(req)))
         }
 
     }

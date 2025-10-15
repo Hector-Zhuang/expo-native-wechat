@@ -204,3 +204,11 @@ class AppPureSignContractParams : Record {
   @Field
   val preEntrustwebId: String = ""
 }
+
+class RequestMerchantTransferParams : Record {
+  @Field val id: String = ""
+
+  @Field val mchId: String = ""
+
+  @Field val packageStr: String = ""
+}

@@ -5,8 +5,8 @@ import androidx.core.os.bundleOf
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
+import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessView
 import com.tencent.mm.opensdk.modelmsg.SendAuth
-
 
 object NativeWechatRespDataHelper {
     private var type: String = ""
@@ -38,7 +38,15 @@ object NativeWechatRespDataHelper {
             type = "PayResp"
         }
 
-        return wrapResponse(baseResp, argument);
+        if (baseResp.type == ConstantsAPI.COMMAND_OPEN_BUSINESS_VIEW) {
+            type = "WXOpenBusinessViewResp"
+            val resp = baseResp as WXOpenBusinessView.Resp
+
+            argument.putString("businessType", resp.businessType)
+            argument.putString("extMsg", resp.extMsg)
+        }
+
+        return wrapResponse(baseResp, argument)
     }
 
     private fun wrapResponse(

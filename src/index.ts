@@ -8,6 +8,7 @@ import {
   SendAuthRequestResponse,
   LaunchMiniProgramResponse,
   UniversalLinkCheckingResponse,
+  RequestMerchantTransferResponse,
 } from "./typing";
 import { executeNativeFunction } from "./utils";
 export * from "./hooks";
@@ -304,6 +305,33 @@ export const appPureSignContract = (request: {
       if (error) reject(error);
 
       resolve(data);
+    });
+  });
+};
+
+export const requestMerchantTransfer = (request: {
+  mchId: string;
+  packageStr: string;
+}) => {
+  assertRegisteration("requestMerchantTransfer");
+
+  return new Promise<RequestMerchantTransferResponse>((resolve, reject) => {
+    const id = executeNativeFunction(NativeModule.requestMerchantTransfer)(
+      request
+    );
+
+    notification.once(id, (error) => {
+      if (error) {
+        return reject(error);
+      }
+
+      notification.once("WXOpenBusinessViewResp", (error, data) => {
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(data);
+      });
     });
   });
 };

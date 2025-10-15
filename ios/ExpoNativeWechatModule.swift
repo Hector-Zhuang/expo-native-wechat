@@ -356,5 +356,23 @@ public class ExpoNativeWechatModule: Module {
                 self.sendEvent("ResponseData", ["id": params.id, "success": success])
             }
         }
+        
+        Function("requestMerchantTransfer") { (params: RequestMerchantTransferParams) -> Void in
+            let req = WXOpenBusinessViewReq()
+            
+            req.businessType = "requestMerchantTransfer"
+            // 使用 URLComponents + URLQueryItem 构建查询字符串，确保对 +、=、& 等字符进行正确的百分号编码
+            var components = URLComponents()
+            components.queryItems = [
+                URLQueryItem(name: "mchId", value: params.mchId),
+                URLQueryItem(name: "appId", value: appid),
+                URLQueryItem(name: "package", value: params.packageStr)
+            ]
+            req.query = components.percentEncodedQuery ?? ""
+            
+            WXApi.send(req) { success in
+                self.sendEvent("ResponseData", ["id": params.id, "success": success])
+            }
+        }
     }
 }

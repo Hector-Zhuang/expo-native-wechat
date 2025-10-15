@@ -202,3 +202,14 @@ struct AppPureSignContractParams: Record {
     @Field
     var preEntrustwebId: String
 }
+
+struct RequestMerchantTransferParams: Record {
+    @Field
+    var id: String
+    
+    @Field
+    var mchId: String
+    
+    @Field
+    var packageStr: String
+}
