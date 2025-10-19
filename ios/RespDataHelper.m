@@ -25,6 +25,13 @@
             
             [argument setObject:resp.extMsg forKey:@"extMsg"];
         }
+        
+        if([baseResp isKindOfClass: [WXOpenBusinessViewResp class]]){
+            WXOpenBusinessViewResp *resp = (WXOpenBusinessViewResp*) baseResp;
+            
+            [argument setObject:resp.businessType forKey:@"businessType"];
+            [argument setObject:resp.extMsg forKey:@"extMsg"];
+        }
     }
     
     NSDictionary *response = [self wrapperResponse:baseResp data:argument];

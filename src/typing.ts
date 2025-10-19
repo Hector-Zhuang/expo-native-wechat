@@ -24,6 +24,11 @@ export type LaunchMiniProgramResponse = NativeWechatResponse<{
   extMsg?: string;
 }>;
 
+export type RequestMerchantTransferResponse = NativeWechatResponse<{
+  businessType: string;
+  extMsg: string;
+}>;
+
 export type WechatShareScene = {
   WXSceneSession: number;
   WXSceneTimeline: number;
