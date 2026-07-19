@@ -96,7 +96,7 @@ class ExpoNativeWechatModule : Module(), IWXAPIEventHandler {
             var req = SendAuth.Req()
 
             req.scope = params.scope
-            req.state = req.state
+            req.state = params.state
 
             sendEvent(
                 "ResponseData", bundleOf(
