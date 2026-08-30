@@ -81,11 +81,13 @@ Before invoking any APIs, registering Native WeChat by invoking `registerApp` is
 import { registerApp } from "expo-native-wechat";
 
 useEffect(() => {
-  return registerApp("wx964290141ebe9b7b");
+  registerApp({
+    appid: "wx964290141ebe9b7b",
+  });
 }, []);
 ```
 
-When invoking `registerApp`, there will be a listener to receive events from Wechat. `registerApp` returns a function to remove the listener, and no events will be received from Wechat.
+When invoking `registerApp`, there will be a listener to receive events from Wechat. `registerApp` returns a Promise that resolves when registration is complete.
 
 ## Invoking API
 
@@ -97,7 +99,9 @@ import { Button, Text } from "react-native";
 import { verifyWechatCode } from "@/api/auth/wechat";
 
 useEffect(() => {
-  registerApp("wx964290141ebe9b7b");
+  registerApp({
+    appid: "wx964290141ebe9b7b",
+  });
 }, []);
 
 const onButtonClicked = async () => {
