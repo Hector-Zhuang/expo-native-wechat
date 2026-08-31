@@ -8,10 +8,6 @@ const { getMainApplicationOrThrow } = AndroidConfig.Manifest;
 
 const withAndroidActivity = (config) => {
   const relativePath = ['app', 'src', 'main', 'java']
-  if (!config.android?.package) {
-    throw new Error('Missing Android package name in app config. Please set it in app.json or app.config.js.');
-  }
-
   relativePath.push(...(config.android?.package?.split('.') || []))
   return withDangerousMod(config, [
     'android',
@@ -164,6 +160,15 @@ const withNativeWechatConfig = (config) => {
 };
 
 const withConfig = (config) => {
+  if (!config.android?.package) {
+    console.warn(
+      '[expo-native-wechat] Missing Android package name in app config (expo.android.package in app.json/app.config.js). ' +
+      'Skipping Android WeChat integration (WXEntryActivity/WXPayEntryActivity will not be generated). ' +
+      'Set android.package to enable WeChat login/share/pay on Android.'
+    );
+    return config;
+  }
+
   config = withNativeWechatConfig(config);
   config = withAndroidActivity(config);
 
